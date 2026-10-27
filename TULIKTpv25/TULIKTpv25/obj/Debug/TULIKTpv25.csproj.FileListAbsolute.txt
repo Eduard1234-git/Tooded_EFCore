@@ -1,0 +1,4 @@
+C:\Users\opilane\source\repos\TULIKTpv25\TULIKTpv25\obj\Debug\TULIKTpv25.csproj.AssemblyReference.cache
+C:\Users\opilane\source\repos\TULIKTpv25\TULIKTpv25\obj\Debug\TULIKTpv25.Properties.Resources.resources
+C:\Users\opilane\source\repos\TULIKTpv25\TULIKTpv25\obj\Debug\TULIKTpv25.csproj.GenerateResource.cache
+C:\Users\opilane\source\repos\TULIKTpv25\TULIKTpv25\obj\Debug\TULIKTpv25.csproj.CoreCompileInputs.cache
