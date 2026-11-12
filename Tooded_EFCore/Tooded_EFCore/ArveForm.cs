@@ -117,8 +117,8 @@ public partial class ArveForm : Form
             return;
         }
 
-        const string saatja = "sinu.konto@gmail.com";
-        const string rakenduseParool = "xxxx xxxx xxxx xxxx";   // vt 4.2, MITTE tavaline parool
+        const string saatja = "eduardkotkass@gmail.com";
+        const string rakenduseParool = "hehf drxt xcxn gnsk";   // vt 4.2, MITTE tavaline parool
 
         try
         {
