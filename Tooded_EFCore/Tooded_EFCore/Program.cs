@@ -15,6 +15,7 @@ internal static class Program
         {
             db.Database.Migrate();
             LooAlgkasutajad(db);
+            AlgTooted.Loo(db);
         }
 
         Application.Run(new LoginForm());
