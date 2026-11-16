@@ -1,4 +1,3 @@
-﻿USE [master];
+﻿USE [Tooded_DB];
 GO
-DROP DATABASE [Tooded_DB];
-GO
+SELECT 1 AS Test;
