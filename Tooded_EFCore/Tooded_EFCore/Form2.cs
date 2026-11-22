@@ -50,9 +50,12 @@ public partial class Form2 : Form
     private void LooLiides()
     {
         Text = "Toodete haldus";
-        ClientSize = new Size(860, 600);
+        ClientSize = new Size(1000, 680);
+        StartPosition = FormStartPosition.CenterParent;
+        BackColor = Stiil.Taust;
 
-        dataGridViewTooted.SetBounds(12, 12, 600, 530);
+        // Tabel toodetega
+        dataGridViewTooted.SetBounds(20, 80, 680, 580);
         dataGridViewTooted.SelectionMode =
             DataGridViewSelectionMode.FullRowSelect;
         dataGridViewTooted.MultiSelect = false;
@@ -60,44 +63,56 @@ public partial class Form2 : Form
         dataGridViewTooted.AllowUserToAddRows = false;
         dataGridViewTooted.CellClick += dataGridViewTooted_CellClick;
 
-        txtNimetus.SetBounds(630, 12, 200, 27);
+        // Tabeli välimus: valge, ilma ridade päisteta, punane valik
+        dataGridViewTooted.BackgroundColor = Color.White;
+        dataGridViewTooted.BorderStyle = BorderStyle.None;
+        dataGridViewTooted.RowHeadersVisible = false;
+        dataGridViewTooted.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        dataGridViewTooted.EnableHeadersVisualStyles = false;
+        dataGridViewTooted.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 55);
+        dataGridViewTooted.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+        dataGridViewTooted.ColumnHeadersDefaultCellStyle.Font = Stiil.Kiri(10, true);
+        dataGridViewTooted.ColumnHeadersHeight = 36;
+        dataGridViewTooted.DefaultCellStyle.Font = Stiil.Kiri(10);
+        dataGridViewTooted.DefaultCellStyle.SelectionBackColor = Stiil.Punane;
+        dataGridViewTooted.AlternatingRowsDefaultCellStyle.BackColor = Stiil.Taust;
+        dataGridViewTooted.RowTemplate.Height = 30;
+
+        // Parem paneel vormiga
+        var vorm = new Panel { Bounds = new Rectangle(720, 80, 260, 580), BackColor = Color.White };
+        Stiil.Aar(vorm);
+
+        var pealkiri = new Label { Text = "Toote andmed", Font = Stiil.Kiri(12, true), Bounds = new Rectangle(15, 10, 230, 28) };
+
+        txtNimetus.SetBounds(15, 45, 230, 27);
         txtNimetus.PlaceholderText = "Toote nimetus";
 
-        txtKogus.SetBounds(630, 50, 200, 27);
+        txtKogus.SetBounds(15, 80, 110, 27);
         txtKogus.PlaceholderText = "Kogus";
 
-        txtHind.SetBounds(630, 88, 200, 27);
+        txtHind.SetBounds(135, 80, 110, 27);
         txtHind.PlaceholderText = "Hind, nt 2,50";
 
-        comboKategooria.SetBounds(630, 126, 200, 27);
+        comboKategooria.SetBounds(15, 115, 230, 27);
         comboKategooria.DropDownStyle = ComboBoxStyle.DropDownList;
 
-        picturePilt.SetBounds(630, 166, 150, 150);
+        foreach (var c in new Control[] { txtNimetus, txtKogus, txtHind, comboKategooria })
+            c.Font = Stiil.Kiri(10);
+
+        picturePilt.SetBounds(55, 152, 150, 130);
         picturePilt.SizeMode = PictureBoxSizeMode.Zoom;
         picturePilt.BorderStyle = BorderStyle.FixedSingle;
 
-        SeaNupp(btnValiPilt, "Vali pilt", 326, btnValiPilt_Click);
-        SeaNupp(btnLisa, "Lisa", 376, btnLisa_Click);
-        SeaNupp(btnUuenda, "Uuenda", 416, btnUuenda_Click);
-        SeaNupp(btnKustuta, "Kustuta", 456, btnKustuta_Click);
+        SeaNupp(btnValiPilt, "Vali pilt", 290, Stiil.Hall, btnValiPilt_Click);
+        SeaNupp(btnLisa, "Lisa toode", 345, Stiil.Roheline, btnLisa_Click);
+        SeaNupp(btnUuenda, "Salvesta muudatused", 390, Stiil.Sinine, btnUuenda_Click);
+        SeaNupp(btnKustuta, "Kustuta toode", 435, Stiil.Punane, btnKustuta_Click);
+        SeaNupp(btnTyhjenda, "Tühjenda väljad", 490, Stiil.Hall, (s, e) => TyhjendaVorm());
+        SeaNupp(btnLisaKategooria, "+ Uus kategooria", 535, Color.FromArgb(50, 50, 55), btnLisaKategooria_Click);
 
-        SeaNupp(
-            btnTyhjenda,
-            "Tühjenda väljad",
-            506,
-            (s, e) => TyhjendaVorm()
-        );
-
-        SeaNupp(
-            btnLisaKategooria,
-            "Lisa kategooria",
-            550,
-            btnLisaKategooria_Click
-        );
-
-        Controls.AddRange(new Control[]
+        vorm.Controls.AddRange(new Control[]
         {
-            dataGridViewTooted,
+            pealkiri,
             txtNimetus,
             txtKogus,
             txtHind,
@@ -110,16 +125,22 @@ public partial class Form2 : Form
             btnTyhjenda,
             btnLisaKategooria
         });
+
+        Controls.Add(dataGridViewTooted);
+        Controls.Add(vorm);
+        Controls.Add(Stiil.Pais("Toodete haldus"));
     }
 
     private void SeaNupp(
         Button nupp,
         string tekst,
         int y,
+        Color varv,
         EventHandler kasitleja)
     {
         nupp.Text = tekst;
-        nupp.SetBounds(630, y, 200, 32);
+        nupp.SetBounds(15, y, 230, 36);
+        Stiil.Nupp(nupp, varv);
         nupp.Click += kasitleja;
     }
 
@@ -226,6 +247,14 @@ public partial class Form2 : Form
             .ToList();
 
         dataGridViewTooted.Columns["KategooriaId"]!.Visible = false;
+        dataGridViewTooted.Columns["Pilt"]!.Visible = false;
+        dataGridViewTooted.Columns["Id"]!.FillWeight = 30;
+        dataGridViewTooted.Columns["Toodenimetus"]!.HeaderText = "Toode";
+        dataGridViewTooted.Columns["Toodenimetus"]!.FillWeight = 180;
+        dataGridViewTooted.Columns["Hind"]!.DefaultCellStyle.Format = "F2";
+        dataGridViewTooted.Columns["Kogus"]!.FillWeight = 60;
+        dataGridViewTooted.Columns["Hind"]!.FillWeight = 60;
+        dataGridViewTooted.Columns["Kategooria"]!.FillWeight = 150;
     }
 
     // Pildi valimine
